@@ -2,10 +2,12 @@ package com.example.api;
 
 import org.springframework.stereotype.Service;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class BeitragService {
-    private final Map<String, BeitragResponse> database = new HashMap<>();
+    private final Map<Integer, BeitragResponse> database = new HashMap<>(); // Key ist nun die KundenNr
+    private final AtomicInteger nextCustomerId = new AtomicInteger(1); // Atomarer Integer für Thread-Sicherheit
 
     private static final Map<String, Double> BASIS_FEES = Map.of(
             "Auto", 50.0,
@@ -27,17 +29,18 @@ public class BeitragService {
         double deckungsZuschlag = COVERAGE_SURCHARGE.getOrDefault(request.getDeckung(), 0.0);
 
         double beitrag = basis * (1 + alterZuschlag + plzZuschlag + deckungsZuschlag);
-        String id = UUID.randomUUID().toString();
 
-        BeitragResponse response = new BeitragResponse(id, request.getVersicherung(), beitrag,
+        int customerId = nextCustomerId.getAndIncrement(); // Sichere Inkrementierung der Kunden-ID
+
+        BeitragResponse response = new BeitragResponse(customerId, request.getVersicherung(), beitrag, // KundenId im Response
                 Map.of("basisbeitrag", basis, "alterszuschlag", basis * alterZuschlag,
                         "plz-zuschlag", basis * plzZuschlag, "deckungszuschlag", basis * deckungsZuschlag));
 
-        database.put(id, response);
+        database.put(customerId, response); // Speichern mit der Kunden-ID als Key
         return response;
     }
 
-    public BeitragResponse getBeitragById(String id) {
+    public BeitragResponse getBeitragById(int id) { // ID ist nun Integer
         return database.get(id);
     }
 }

@@ -3,32 +3,21 @@ package com.example.api;
 import java.util.Map;
 
 public class BeitragResponse {
-    private String id;
-    private String versicherung;
-    private double beitrag;
-    private Map<String, Double> details;
+    private final int id; // ID ist nun Integer
+    private final String versicherung;
+    private final double beitrag;
+    private final Map<String, Double> zuschlaege;
 
-    public BeitragResponse(String id, String versicherung, double beitrag, Map<String, Double> details) {
+    public BeitragResponse(int id, String versicherung, double beitrag, Map<String, Double> zuschlaege) {
         this.id = id;
         this.versicherung = versicherung;
         this.beitrag = beitrag;
-        this.details = details;
+        this.zuschlaege = zuschlaege;
     }
 
-    // Getter
-    public String getId() {
-        return id;
-    }
-
-    public String getVersicherung() {
-        return versicherung;
-    }
-
-    public double getBeitrag() {
-        return beitrag;
-    }
-
-    public Map<String, Double> getDetails() {
-        return details;
-    }
+    // Getter-Methoden (wichtig für die Serialisierung z.B. nach JSON)
+    public int getId() { return id; }
+    public String getVersicherung() { return versicherung; }
+    public double getBeitrag() { return beitrag; }
+    public Map<String, Double> getZuschlaege() { return zuschlaege; }
 }

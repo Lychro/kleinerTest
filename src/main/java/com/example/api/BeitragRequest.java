@@ -1,5 +1,7 @@
 package com.example.api;
 
+import java.util.Map;
+
 public class BeitragRequest {
     private String versicherung;
     private int alter;
@@ -7,8 +9,6 @@ public class BeitragRequest {
     private String deckung;
 
 
-
-    //Getter, Setter
 
     public String getVersicherung(){
         return versicherung;

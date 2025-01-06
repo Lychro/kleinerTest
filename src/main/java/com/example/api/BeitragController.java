@@ -1,10 +1,8 @@
 package com.example.api;
 
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Optional;
 
@@ -43,7 +41,7 @@ public class BeitragController {
 
     // GET: Beitrag basierend auf der ID abrufen
     @GetMapping("/{id}")
-    public ResponseEntity<?> getBeitrag(@PathVariable String id) {
+    public ResponseEntity<?> getBeitrag(@PathVariable int id) {
         Optional<BeitragResponse> beitrag = Optional.ofNullable(beitragService.getBeitragById(id));
 
         // Fehlerbehandlung, falls keine Berechnung zur ID gefunden wird
@@ -51,7 +49,7 @@ public class BeitragController {
             return ResponseEntity.status(404).body("Beitragsberechnung mit der ID " + id + " nicht gefunden.");
         }
         return ResponseEntity.ok(beitrag.get());
-        }
+    }
 
     @PostMapping("/test-berechnung")
     public BeitragResponse testBerechnung() {
