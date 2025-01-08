@@ -1,7 +1,5 @@
 package com.example.api;
 
-import java.util.Map;
-
 public class BeitragRequest {
     private String versicherung;
     private int alter;
