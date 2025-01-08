@@ -50,7 +50,5 @@ public class BeitragService {
 
         database.put(customerId, response);
         return response;
-
-
     }
 }
