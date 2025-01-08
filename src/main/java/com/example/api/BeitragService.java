@@ -13,7 +13,7 @@ public class BeitragService {
             "Gesundheit", 60.0
     );
 
-    private static final Map<String, Double> DECKUNGS_ART = Map.of(
+    private static final Map<String, Double> deckungs_art = Map.of(
             "Basis", 0.0,
             "Premium", 0.15,
             "VIP", 0.30
@@ -23,6 +23,7 @@ public class BeitragService {
         double basis = grundbetraege.getOrDefault(request.getVersicherung(), 0.0);
         double alterZuschlag = (request.getAlter() < 25) ? 0.20 : (request.getAlter() <= 50) ? 0.10 : 0.05;
         double plzZuschlag;
+
         String plzStart = request.getPlz().substring(0, 1);
 
         switch (plzStart) {
@@ -39,7 +40,7 @@ public class BeitragService {
                 plzZuschlag = 0.0;
                 break;
         }
-        double deckungsZuschlag = DECKUNGS_ART.getOrDefault(request.getDeckung(), 0.0);
+        double deckungsZuschlag = deckungs_art.getOrDefault(request.getDeckung(), 0.0);
 
         double beitrag = basis * (1 + alterZuschlag + plzZuschlag + deckungsZuschlag);
 
@@ -47,11 +48,7 @@ public class BeitragService {
         BeitragResponse response = new BeitragResponse(customerId, request.getVersicherung(), beitrag, // KundenId im Response
                 Map.of("basisbeitrag", basis, "alterszuschlag", basis * alterZuschlag,"plz-zuschlag", basis * plzZuschlag, "deckungszuschlag", basis * deckungsZuschlag));
 
-        database.put(customerId, response); // Speichern mit der Kunden-ID als Key
+        database.put(customerId, response);
         return response;
-    }
-
-    public BeitragResponse getBeitragById(int id) {
-        return database.get(id);
     }
 }
