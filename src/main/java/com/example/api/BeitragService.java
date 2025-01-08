@@ -5,7 +5,7 @@ import java.util.*;
 
 @Service
 public class BeitragService {
-    private final Map<Integer, BeitragResponse> database = new HashMap<>(); // Key ist die KundenNr
+    private final Map<Integer, BeitragResponse> database = new HashMap<>(); // Key ist die ID
     private int nextId = 1;
     private static final Map<String, Double> grundbetraege = Map.of(
             "Auto", 50.0,
